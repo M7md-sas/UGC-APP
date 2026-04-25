@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1E3A5F">
+<title>UGC Academy — أكاديمية الخطوط الكهربائية الأرضية</title>
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="UGC">
+<meta name="mobile-web-app-capable" content="yes">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="styles.css">
+<style>
+/* ===== SPLASH SCREEN ===== */
+#splash {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: linear-gradient(160deg, #1E3A5F 0%, #0d2137 60%, #060e1c 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+#splash.hide {
+  opacity: 0;
+  transform: scale(1.06);
+  pointer-events: none;
+}
+.splash-icon {
+  width: 110px;
+  height: 110px;
+  border-radius: 26px;
+  box-shadow: 0 12px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(245,158,11,0.3);
+  animation: splashPop 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.1s both;
+}
+.splash-name {
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: white;
+  margin-top: 24px;
+  letter-spacing: 0.5px;
+  animation: splashUp 0.5s ease 0.35s both;
+}
+.splash-sub {
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+  font-size: 12px;
+  color: rgba(255,255,255,0.45);
+  margin-top: 6px;
+  letter-spacing: 1px;
+  animation: splashUp 0.5s ease 0.45s both;
+}
+.splash-bar {
+  width: 48px;
+  height: 3px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 99px;
+  margin-top: 36px;
+  overflow: hidden;
+  animation: splashUp 0.4s ease 0.55s both;
+}
+.splash-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #f59e0b, #fde68a);
+  border-radius: 99px;
+  animation: splashLoad 1.4s ease 0.6s forwards;
+}
+@keyframes splashPop {
+  from { opacity: 0; transform: scale(0.7); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes splashUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes splashLoad {
+  0%   { width: 0%; }
+  60%  { width: 75%; }
+  100% { width: 100%; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ===== SPLASH SCREEN ===== -->
+<div id="splash">
+  <svg class="splash-icon" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="sb" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#1E3A5F"/>
+        <stop offset="100%" stop-color="#0d2137"/>
+      </linearGradient>
+      <radialGradient id="sg" cx="80%" cy="20%" r="40%">
+        <stop offset="0%" stop-color="#fde68a" stop-opacity="0.3"/>
+        <stop offset="100%" stop-color="#fde68a" stop-opacity="0"/>
+      </radialGradient>
+      <filter id="sw" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="5" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+    <rect width="200" height="200" fill="url(#sb)" rx="36"/>
+    <rect width="200" height="200" fill="url(#sg)" rx="36"/>
+    <line x1="0" y1="158" x2="200" y2="158" stroke="#1e4976" stroke-width="12"/>
+    <text x="100" y="118" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="78" font-weight="900" fill="white" letter-spacing="-2">UGC</text>
+    <line x1="28" y1="130" x2="172" y2="130" stroke="#f59e0b" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="30" cy="158" r="7" fill="#f59e0b"/>
+    <circle cx="170" cy="158" r="7" fill="#f59e0b"/>
+    <polygon points="162,12 144,52 158,52 136,92 172,44 157,44 164,12" fill="white" filter="url(#sw)" opacity="0.9"/>
+  </svg>
+  <div class="splash-name">UGC Academy</div>
+  <div class="splash-sub">أكاديمية الخطوط الكهربائية الأرضية</div>
+  <div class="splash-bar"><div class="splash-bar-fill"></div></div>
+</div>
+
+<div class="app-container">
+
+  <!-- All Pages -->
+  <div id="page-home" class="page active"></div>
+  <div id="page-modules" class="page"></div>
+  <div id="page-module-detail" class="page"></div>
+  <div id="page-lesson" class="page"></div>
+  <div id="page-library" class="page"></div>
+  <div id="page-category" class="page"></div>
+  <div id="page-topic" class="page"></div>
+  <div id="page-tools" class="page"></div>
+  <div id="page-calculator" class="page"></div>
+  <div id="page-glossary" class="page"></div>
+  <div id="page-bookmarks" class="page"></div>
+  <div id="page-settings" class="page"></div>
+  <div id="page-decision-trees" class="page"></div>
+  <div id="page-decision-tree" class="page fullscreen"></div>
+  <div id="page-red-flags" class="page"></div>
+  <div id="page-templates" class="page"></div>
+  <div id="page-emergency" class="page"></div>
+  <div id="page-gap-analysis" class="page"></div>
+  <div id="page-quiz-question" class="page fullscreen"></div>
+  <div id="page-search" class="page"></div>
+  <div id="page-onboarding" class="page fullscreen"></div>
+
+  <!-- Bottom Navigation -->
+  <nav id="bottom-nav" class="bottom-nav">
+    <button class="nav-item active" data-nav="home" onclick="goTo('home')">
+      <i data-lucide="home"></i><span>الرئيسية</span>
+    </button>
+    <button class="nav-item" data-nav="modules" onclick="goTo('modules')">
+      <i data-lucide="book-open"></i><span>الموديولات</span>
+    </button>
+    <button class="nav-item" data-nav="library" onclick="goTo('library')">
+      <i data-lucide="library"></i><span>المكتبة</span>
+    </button>
+    <button class="nav-item" data-nav="tools" onclick="goTo('tools')">
+      <i data-lucide="calculator"></i><span>الأدوات</span>
+    </button>
+    <button class="nav-item" data-nav="settings" onclick="goTo('settings')">
+      <i data-lucide="user"></i><span>حسابي</span>
+    </button>
+  </nav>
+
+</div>
+
+<!-- Toast container -->
+<div id="toast-container" class="toast-container"></div>
+
+<!-- Modal -->
+<div id="modal-backdrop" class="modal-backdrop" onclick="if(event.target===this)hideModal()">
+  <div id="modal-content" class="modal"></div>
+</div>
+
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+<!-- App Scripts -->
+<script src="content.js"></script>
+<script src="app.js"></script>
+
+<script>
+  // Initialize icons on load
+  window.addEventListener('load', () => { if(window.lucide) lucide.createIcons({ nameAttr: 'data-lucide' }); });
+</script>
+
+<!-- زر تثبيت PWA -->
+<div id="pwa-banner" style="display:none;position:fixed;bottom:76px;left:50%;transform:translateX(-50%);z-index:9999;background:#1E3A5F;border:1.5px solid #f59e0b;border-radius:16px;padding:14px 20px;box-shadow:0 8px 32px rgba(0,0,0,.5);max-width:320px;width:calc(100% - 40px);direction:rtl">
+  <div style="display:flex;align-items:center;gap:12px">
+    <img src="icon-192.png" width="44" height="44" style="border-radius:10px;flex-shrink:0" alt="UGC">
+    <div style="flex:1">
+      <p style="font-size:13px;font-weight:700;color:white;margin:0 0 2px;font-family:Tajawal,sans-serif">ثبّت التطبيق</p>
+      <p style="font-size:11px;color:rgba(255,255,255,.65);margin:0;font-family:Tajawal,sans-serif">أضفه لشاشتك الرئيسية</p>
+    </div>
+    <div style="display:flex;gap:8px;flex-shrink:0">
+      <button onclick="installPWA()" style="background:#f59e0b;color:#0d2137;border:none;border-radius:10px;padding:8px 14px;font-size:12px;font-weight:800;cursor:pointer;font-family:Tajawal,sans-serif">تثبيت</button>
+      <button onclick="document.getElementById('pwa-banner').style.display='none'" style="background:rgba(255,255,255,.1);color:white;border:none;border-radius:10px;padding:8px 10px;font-size:14px;cursor:pointer;line-height:1">✕</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Splash Screen
+function hideSplash() {
+  const splash = document.getElementById('splash');
+  if (!splash) return;
+  splash.classList.add('hide');
+  setTimeout(() => { splash.style.display = 'none'; }, 650);
+}
+// يختفي بعد 2.2 ثانية
+window.addEventListener('DOMContentLoaded', () => {
+  setTimeout(hideSplash, 2200);
+});
+
+// Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(r => console.log('SW registered'))
+      .catch(e => console.log('SW error:', e));
+  });
+}
+
+// زر التثبيت
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  setTimeout(() => {
+    const b = document.getElementById('pwa-banner');
+    if (b) b.style.display = 'block';
+  }, 3000);
+});
+
+function installPWA() {
+  const b = document.getElementById('pwa-banner');
+  if (b) b.style.display = 'none';
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(r => {
+      deferredPrompt = null;
+    });
+  }
+}
+
+window.addEventListener('appinstalled', () => {
+  document.getElementById('pwa-banner').style.display = 'none';
+  deferredPrompt = null;
+});
+</script>
+
+</body>
+</html>
