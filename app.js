@@ -310,12 +310,50 @@ function openLesson(mid, idx) {
       <h1 style="font-size:20px;font-weight:700;margin:6px 0;color:white;line-height:1.3">${lessonTitle(mid,idx)}</h1>
       <p style="font-size:12px;color:var(--primary-100);margin:0">ضمن: ${m.title}</p>
     </div>
-    <div class="placeholder-notice fade-up delay-1"><strong>📝 محتوى نموذجي</strong><br>هذه بنية الدرس الأساسية. المحتوى التقني التفصيلي يُضاف بمراجعة مهندس متخصص.</div>
-    <div class="topic-section fade-up delay-2"><h3>📖 مقدمة</h3><p>هذا الدرس يناقش <strong>${lessonTitle(mid,idx)}</strong> في سياق ${m.title}. سنغطي المفاهيم الأساسية والتطبيقات العملية والأخطاء الشائعة.</p></div>
-    <div class="topic-section fade-up delay-3"><h3>🎯 المحاور</h3><ul><li>المفاهيم والتعريفات</li><li>المعايير المرجعية (IEC / SEC / IEEE)</li><li>الإجراءات العملية خطوة بخطوة</li><li>الأخطاء الشائعة وتجنّبها</li></ul></div>
-    <div class="topic-section fade-up delay-4"><h3>🔧 التطبيق العملي</h3><ul><li>الظروف البيئية</li><li>معايير السلامة (HSE)</li><li>متطلبات المواصفات (PTS/GTS)</li><li>إجراءات الجودة (ITP)</li></ul></div>
-    <div class="alert-box info fade-up delay-5">${ic('lightbulb',20)}<div><h4>💡 نصيحة احترافية</h4><p>راجع دليل المصنّع وتعليمات الاستشاري قبل التطبيق الميداني.</p></div></div>
-    <div class="px-5" style="margin-top:20px"><button class="btn btn-primary btn-full" onclick="completeLesson('${k}',${mid})">${ic('check',16)} أتممت الدرس</button></div>
+    <!-- ===== TABS ===== -->
+    <div style="display:flex;border-bottom:1px solid var(--border);background:var(--surface);position:sticky;top:0;z-index:10;direction:rtl">
+      <button id="tab-btn-content" onclick="switchTopicTab('content','${k}')" style="flex:1;padding:12px 6px;font-size:12px;font-weight:700;border:none;background:none;cursor:pointer;border-bottom:2px solid var(--primary-500);color:var(--primary-600);display:flex;align-items:center;justify-content:center;gap:5px">
+        ${ic('book-open',14)} المحتوى
+      </button>
+      <button id="tab-btn-videos" onclick="switchTopicTab('videos','${k}')" style="flex:1;padding:12px 6px;font-size:12px;font-weight:600;border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;color:var(--text-muted);display:flex;align-items:center;justify-content:center;gap:5px">
+        ${ic('clapperboard',14)} فيديوهات
+      </button>
+      <button id="tab-btn-images" onclick="switchTopicTab('images','${k}')" style="flex:1;padding:12px 6px;font-size:12px;font-weight:600;border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;color:var(--text-muted);display:flex;align-items:center;justify-content:center;gap:5px">
+        ${ic('image',14)} صور
+      </button>
+    </div>
+
+    <!-- TAB: المحتوى -->
+    <div id="tab-content">
+      <div class="placeholder-notice fade-up delay-1"><strong>📝 محتوى نموذجي</strong><br>هذه بنية الدرس الأساسية. المحتوى التقني التفصيلي يُضاف بمراجعة مهندس متخصص.</div>
+      <div class="topic-section fade-up delay-2"><h3>📖 مقدمة</h3><p>هذا الدرس يناقش <strong>${lessonTitle(mid,idx)}</strong> في سياق ${m.title}. سنغطي المفاهيم الأساسية والتطبيقات العملية والأخطاء الشائعة.</p></div>
+      <div class="topic-section fade-up delay-3"><h3>🎯 المحاور</h3><ul><li>المفاهيم والتعريفات</li><li>المعايير المرجعية (IEC / SEC / IEEE)</li><li>الإجراءات العملية خطوة بخطوة</li><li>الأخطاء الشائعة وتجنّبها</li></ul></div>
+      <div class="topic-section fade-up delay-4"><h3>🔧 التطبيق العملي</h3><ul><li>الظروف البيئية</li><li>معايير السلامة (HSE)</li><li>متطلبات المواصفات (PTS/GTS)</li><li>إجراءات الجودة (ITP)</li></ul></div>
+      <div class="alert-box info fade-up delay-5">${ic('lightbulb',20)}<div><h4>💡 نصيحة احترافية</h4><p>راجع دليل المصنّع وتعليمات الاستشاري قبل التطبيق الميداني.</p></div></div>
+      <div class="px-5" style="margin-top:20px"><button class="btn btn-primary btn-full" onclick="completeLesson('${k}',${mid})">${ic('check',16)} أتممت الدرس</button></div>
+    </div>
+
+    <!-- TAB: فيديوهات -->
+    <div id="tab-videos" style="display:none">
+      <div class="px-5" style="padding-top:40px;padding-bottom:40px;text-align:center">
+        <div style="width:72px;height:72px;border-radius:20px;background:var(--primary-50);display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
+          ${ic('clapperboard',32)}
+        </div>
+        <h3 style="font-size:15px;font-weight:700;margin:0 0 8px">لا توجد فيديوهات بعد</h3>
+        <p style="font-size:12px;color:var(--text-muted);line-height:1.7;margin:0">سيتم إضافة فيديوهات شرح لهذا الدرس قريباً</p>
+      </div>
+    </div>
+
+    <!-- TAB: صور -->
+    <div id="tab-images" style="display:none">
+      <div class="px-5" style="padding-top:40px;padding-bottom:40px;text-align:center">
+        <div style="width:72px;height:72px;border-radius:20px;background:var(--primary-50);display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
+          ${ic('image',32)}
+        </div>
+        <h3 style="font-size:15px;font-weight:700;margin:0 0 8px">لا توجد صور بعد</h3>
+        <p style="font-size:12px;color:var(--text-muted);line-height:1.7;margin:0">سيتم إضافة صور لهذا الدرس قريباً</p>
+      </div>
+    </div>
   `;
   goTo('lesson');
 }
