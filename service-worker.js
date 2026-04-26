@@ -1,24 +1,12 @@
-// UGC Academy — Service Worker
-const CACHE = 'ugc-v1';
-const ASSETS = [
-  '/UGC-APP/',
-  '/UGC-APP/index.html',
-  '/UGC-APP/app.js',
-  '/UGC-APP/content.js',
-  '/UGC-APP/styles.css',
-  '/UGC-APP/manifest.json',
-  '/UGC-APP/icon-192.png',
-  '/UGC-APP/icon-512.png'
-];
+// UGC Academy — Service Worker (Network First)
+const CACHE = 'ugc-v2';
 
-// التثبيت — تخزين الملفات
+// التثبيت
 self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting())
-  );
+  self.skipWaiting();
 });
 
-// التفعيل — حذف الكاش القديم
+// التفعيل — احذف كل كاش قديم
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys =>
@@ -27,18 +15,33 @@ self.addEventListener('activate', e => {
   );
 });
 
-// الطلبات — من الكاش أولاً ثم الشبكة
+// الطلبات — الشبكة أولاً، الكاش احتياط فقط
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
-  e.respondWith(
-    caches.match(e.request).then(cached => {
-      if (cached) return cached;
-      return fetch(e.request).then(res => {
-        if (!res || res.status !== 200 || res.type === 'opaque') return res;
+
+  const url = e.request.url;
+  const isDynamic = url.includes('.js') || url.includes('.css') || url.includes('.html');
+
+  if (isDynamic) {
+    // ملفات JS/CSS/HTML — دائماً من الشبكة عشان التحديثات
+    e.respondWith(
+      fetch(e.request).then(res => {
         const clone = res.clone();
         caches.open(CACHE).then(c => c.put(e.request, clone));
         return res;
-      }).catch(() => caches.match('/UGC-APP/index.html'));
-    })
-  );
+      }).catch(() => caches.match(e.request))
+    );
+  } else {
+    // صور وأيقونات — كاش أولاً
+    e.respondWith(
+      caches.match(e.request).then(cached => {
+        if (cached) return cached;
+        return fetch(e.request).then(res => {
+          const clone = res.clone();
+          caches.open(CACHE).then(c => c.put(e.request, clone));
+          return res;
+        });
+      })
+    );
+  }
 });
