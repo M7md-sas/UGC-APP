@@ -1,12 +1,14 @@
 {
+  "id": "ugc-academy",
   "name": "UGC Academy",
   "short_name": "UGC",
-  "description": "أكاديمية الخطوط الكهربائية الأرضية",
-  "start_url": "/UGC-APP/",
-  "scope": "/UGC-APP/",
+  "description": "أكاديمية الخطوط الكهربائية الأرضية — تطبيق تعليمي تفاعلي لمهندسي SEC",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
   "orientation": "portrait",
-  "background_color": "#0d2137",
+  "background_color": "#1E3A5F",
   "theme_color": "#1E3A5F",
   "lang": "ar",
   "dir": "rtl",
@@ -16,13 +18,25 @@
       "src": "icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
     },
     {
       "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     },
     {
       "src": "apple-touch-icon.png",
@@ -30,19 +44,28 @@
       "type": "image/png"
     }
   ],
-  "screenshots": [],
   "shortcuts": [
     {
       "name": "المكتبة",
       "short_name": "المكتبة",
-      "url": "/UGC-APP/?page=library",
+      "description": "تصفح المكتبة الفنية",
+      "url": "./?page=library",
       "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
     },
     {
       "name": "الأدوات",
       "short_name": "الأدوات",
-      "url": "/UGC-APP/?page=tools",
+      "description": "الحاسبات الهندسية",
+      "url": "./?page=tools",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "شجرات القرار",
+      "short_name": "قرارات",
+      "description": "ماذا أفعل لو...؟",
+      "url": "./?page=decision-trees",
       "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
     }
-  ]
+  ],
+  "prefer_related_applications": false
 }
