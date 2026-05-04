@@ -4,6 +4,32 @@
 
 const TOPIC_MEDIA = {
 
+  // ===== c5-s4-0: المرحلة 1: تجهيز بيئة العمل =====
+  "c5-s4-0": {
+    videos: [
+      {
+        id: "dQw4w9WgXcQ",
+        title: "تجهيز بيئة العمل للوصلات عالية الجهد",
+        subtitle: "فيديو تجريبي — استبدله برابط حقيقي",
+        duration: "0:00",
+        source: "YouTube"
+      }
+    ],
+    images: []
+  },
+
+  // ===== c1-s1-0: 380 kV و 230 kV =====
+  "c1-s1-0": {
+    videos: [],
+    images: [
+      {
+        url: "https://i.postimg.cc/QNWGhqTV/Snapchat-1000168645.jpg",
+        title: "صورة تجريبية",
+        description: "هذي صورة تجريبية فقط — استبدلها بصورة تقنية"
+      }
+    ]
+  },
+
   // ===== c8-s1-1: Sheath Integrity Test =====
   "c8-s1-1": {
     videos: [
