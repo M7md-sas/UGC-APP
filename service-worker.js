@@ -6,11 +6,16 @@ const CACHE = 'ugc-v5';
 const PRECACHE_URLS = [
   './',
   './index.html',
+  './offline.html',
   './manifest.json',
-  './favicon.webp',
-  './icon-192.png',
-  './icon-512.png',
-  './apple-touch-icon.png'
+  './src/styles.css',
+  './src/app.js',
+  './src/content.js',
+  './src/media.js',
+  './assets/icons/icon-192.png',
+  './assets/icons/icon-512.png',
+  './assets/icons/apple-touch-icon.png',
+  './assets/icons/favicon.ico'
 ];
 
 // التثبيت — precache للأيقونات والملفات الأساسية
@@ -63,7 +68,7 @@ self.addEventListener('fetch', e => {
         caches.open(CACHE).then(c => c.put(e.request, clone));
         return res;
       }).catch(() => caches.match(e.request).then(cached =>
-        cached || new Response('Offline', { status: 503 })
+        cached || caches.match('./offline.html') || new Response('Offline', { status: 503 })
       ))
     );
   } else {

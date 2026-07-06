@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://m7md-sas.github.io/ugc-app/sitemap.xml

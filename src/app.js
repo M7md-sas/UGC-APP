@@ -22,7 +22,7 @@ const State = {
     localStorage.setItem('ugc_state', JSON.stringify({
       user: this.user, theme: this.theme, bookmarks: this.bookmarks,
       completedLessons: this.completedLessons, moduleProgress: this.moduleProgress,
-      calcHistory: this.calcHistory
+      calcHistory: this.calcHistory, quizResults: this.quizResults
     }));
   },
   load() {
@@ -67,7 +67,17 @@ function goTo(page, opts = {}) {
     'decision-trees': renderDecisionTrees, 'red-flags': renderRedFlags,
     'templates': renderTemplates, 'emergency': renderEmergency,
     'gap-analysis': renderGapAnalysisIntro, 'search': renderSearch,
-    'image-detail': () => { if (typeof renderImageDetail === 'function') renderImageDetail(); }
+    'image-detail': () => { if (typeof renderImageDetail === 'function') renderImageDetail(); },
+    'onboarding': () => {
+      const page = document.getElementById('page-onboarding');
+      page.innerHTML = `
+        <div class="page-content" style="padding:2rem;text-align:center;direction:rtl">
+          <h2 style="color:var(--text-primary);margin-bottom:1rem">مرحباً بك في UGC Academy</h2>
+          <p style="color:var(--text-secondary);margin-bottom:2rem">هذه الميزة قيد التطوير</p>
+          <button onclick="goBack()" class="btn btn-primary" style="padding:0.75rem 2rem;border-radius:0.5rem;font-size:1rem;cursor:pointer">العودة</button>
+        </div>
+      `;
+    }
   };
   if (renderers[page]) renderers[page]();
 
@@ -293,7 +303,7 @@ function renderModuleDetail(id) {
             <div style="width:36px;height:36px;border-radius:50%;background:${done?'var(--success)':cur?'linear-gradient(135deg,var(--primary-500),var(--primary-600))':'var(--border)'};color:${done||cur?'white':'var(--text-muted)'};display:flex;align-items:center;justify-content:center;font-family:Inter;font-weight:700;font-size:13px;flex-shrink:0">${done?'✓':(i+1)}</div>
             <div style="flex:1;text-align:right">
               <div class="topic-title">الدرس ${i+1}: ${lessonTitle(m.id,i)}</div>
-              <div class="topic-desc">${5+Math.floor(Math.random()*10)} دقائق · ${done?'مكتمل ✓':cur?'التالي':'قيد الانتظار'}</div>
+              <div class="topic-desc">${10} دقائق · ${done?'مكتمل ✓':cur?'التالي':'قيد الانتظار'}</div>
             </div>
             ${ic('chevron-left',14)}
           </button>
@@ -338,9 +348,13 @@ function openLesson(mid, idx) {
 
 function completeLesson(k, mid) {
   if (!State.completedLessons.includes(k)) State.completedLessons.push(k);
-  const m = D.MODULES.find(x => x.id === mid);
-  const done = State.completedLessons.filter(l => l.startsWith(`${mid}-`)).length;
-  State.moduleProgress[mid] = Math.round((done / m.lessons) * 100);
+  if (mid) {
+    const m = D.MODULES.find(x => x.id === mid);
+    if (m) {
+      const done = State.completedLessons.filter(l => l.startsWith(`${mid}-`)).length;
+      State.moduleProgress[mid] = Math.round((done / m.lessons) * 100);
+    }
+  }
   State.save();
   toast('تم تسجيل الإكمال', 'check-circle');
   setTimeout(goBack, 700);
@@ -524,7 +538,7 @@ function topicFull(d, key) {
     ${d.hseWarnings?`<div class="alert-box warning fade-up delay-4">${ic('shield-alert',20)}<div><h4>⚠️ تنبيهات السلامة</h4><ul style="margin:6px 0 0;padding-right:16px">${d.hseWarnings.map(w=>`<li style="font-size:12px;margin-bottom:4px">${w}</li>`).join('')}</ul></div></div>`:''}
     ${d.commonMistakes?`<div class="alert-box danger fade-up delay-5">${ic('x-circle',20)}<div><h4>❌ أخطاء تُفشل العمل</h4><ul style="margin:6px 0 0;padding-right:16px">${d.commonMistakes.map(m=>`<li style="font-size:12px;margin-bottom:4px">${m}</li>`).join('')}</ul></div></div>`:''}
     ${d.references?`<div class="topic-section fade-up delay-6"><h3>📚 المراجع</h3><ul>${d.references.map(r=>`<li>${r}</li>`).join('')}</ul></div>`:''}
-    <div class="px-5 fade-up delay-6" style="margin-top:20px"><button class="btn btn-primary btn-full" onclick="completeLesson('${key}',0);goBack()">${ic('check-circle',16)} أتممت</button></div>
+    <div class="px-5 fade-up delay-6" style="margin-top:20px"><button class="btn btn-primary btn-full" onclick="completeLesson('${key}', null);goBack()">${ic('check-circle',16)} أتممت</button></div>
   `;
 }
 
@@ -851,12 +865,12 @@ function renderDecisionTrees() {
   refreshIcons();
 }
 
-let dtState = { tree: null, step: 0, path: [] };
+let dtState = { tree: null, step: 0, path: [], history: [] };
 
 function openDecisionTree(id) {
   const t = D.DECISION_TREES.find(x => x.id === id);
   if (!t) return;
-  dtState = { tree: t, step: 0, path: [] };
+  dtState = { tree: t, step: 0, path: [], history: [] };
   renderDTStep();
   goTo('decision-tree');
 }
@@ -940,14 +954,21 @@ function dtChoose(optIdx) {
     `;
     refreshIcons();
   } else if (opt.next !== undefined) {
+    dtState.history.push(dtState.step);
     dtState.step = opt.next;
     renderDTStep();
   }
 }
 
 function dtBack() {
-  dtState.path.pop();
-  dtState.step = Math.max(0, dtState.step - 1);
+  if (dtState.history && dtState.history.length > 0) {
+    dtState.path.pop();
+    dtState.step = dtState.history.pop();
+  } else {
+    dtState.step = 0;
+    dtState.path = [];
+    dtState.history = [];
+  }
   renderDTStep();
 }
 
@@ -1269,7 +1290,8 @@ function renderImageDetail() {
   const d = State.imagePageData;
   if (!d) { goBack(); return; }
   const { key, idx, img } = d;
-  const m = window.APP_DATA.TOPIC_MEDIA[key];
+  const m = window.APP_DATA?.TOPIC_MEDIA?.[key];
+  if (!m) { goBack(); return; }
   $('#page-image-detail').innerHTML = `
     <div class="top-bar">
       <button class="icon-btn" onclick="goBack()">${ic('arrow-right')}</button>
